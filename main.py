@@ -15,10 +15,10 @@ def out_graph_surf(ticker_str,w,h):
 
         fig, ax = plt.subplots(figsize=(w/100,h/100),dpi=100)
         fig.patch.set_facecolor((0,0,0))
-        ax.set_facecolor((20/256,20/256,20/256)) #Matplotlib uses decimals between 0 & 1 rather than 0 to 256
+        ax.set_facecolor((0/256,0/256,0/256)) #Matplotlib uses decimals between 0 & 1 rather than 0 to 256
         ax.plot(hist.index, hist.values,color='white',linewidth=0.5)
 
-        ax.set_title(f"{ticker_str}: Stock Performance",color='white')
+        ax.set_title(f"{ticker_str.upper()} : Stock Performance",color='white')
         ax.tick_params(axis='x', colors='white')
         ax.tick_params(axis='y', colors='white')
         ax.spines['bottom'].set_color('white')
@@ -62,7 +62,7 @@ def ui (screen,mainClock):
                 wacc_val = WACC(text[0])
             else:
                 wacc_val = float(text[4])/100
-            out_ans = FMajor(text[0], text[1], text[2], text[3], wacc_val)
+            out_ans = FMajor(text[0].upper(), text[1], text[2], text[3], wacc_val)
             text[5] = out_ans
 
             graph_surf = out_graph_surf(text[0],420,350) #Outputs a graph based on the ticker based on stock performance #Graph
@@ -85,8 +85,6 @@ def ui (screen,mainClock):
         #Graph
         if graph_surf is not None:
             screen.blit(graph_surf,(50,380))
-        else: #Draws a placeholder if there is no graph
-            pygame.draw.rect(screen, (50,50,50),(50,380,420,350))
 
 
         for event in pygame.event.get():
@@ -100,7 +98,7 @@ def ui (screen,mainClock):
                         active_box = i
                         if (i==5): #Outputs results
                             DCFOutput()
-                        elif text[i] == saved_Text_Data[i]:
+                        else:
                             text[i] = ""
 
             if event.type == KEYDOWN and active_box is not None:  # If a key is being inputted
@@ -202,7 +200,7 @@ def DCF(proj_time_1,growth_r_1,p_growth_r_1,wacc_2,ebit_1, ebitda_1, ncwc_1_a, n
     val_percent = (dis_stock_p-c_share_p)/c_share_p*100 #Calcuates the percentage under/overvaluation between current and target stock price
 
     if dis_stock_p > c_share_p:
-        mega_string += (f"Target Price:\n{Convert(dis_stock_p)}    Current Share Price: {Convert(c_share_p)}    {ticker_str} is undervalued by {Convert(val_percent)}%")
+        mega_string += (f"\nTarget Price:{Convert(dis_stock_p)}    Current Share Price: {Convert(c_share_p)}\n{ticker_str} is undervalued by {Convert(val_percent)}%")
     else:
         mega_string += (f"\nTarget Price: {Convert(dis_stock_p)}    Current Share Price: {Convert(c_share_p)}\n{ticker_str} is overvalued by {Convert(-val_percent)}%")
 
