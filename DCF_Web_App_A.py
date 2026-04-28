@@ -172,4 +172,4 @@ if st.button("Press to Output"):
             st.pyplot(graph_surf)
 
     except Exception as e:
-        st.text("Invalid Input")
+        st.error(f"The error is: {e}")
